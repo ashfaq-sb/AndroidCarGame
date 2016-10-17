@@ -27,4 +27,17 @@ public class GameObjectHandler {
     public void removeObject(GameObject object){
         this.object.remove(object);
     }
+
+    public int countOfObject(ID id){
+        int count=0;
+        for (int i = 0; i < object.size(); i++) {
+
+            GameObject tempObject = object.get(i);
+            if(tempObject.getId() == id){
+                count++;
+            }
+        }
+        return count;
+    }
+
 }

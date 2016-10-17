@@ -25,13 +25,14 @@ public class Road {
     public Road(GamePlay game, Bitmap bmp1, int x, int y){
 
         this.bmp = bmp1;
-        height = x;
-        // System.out.println(bmp.getHeight());
+
         this.my = 1;
         this.x = x;
         this.y = y;
         this.game = game;
-    }
+        height = game.screenHeight;
+        width = game.screenWidth;
+}
     public void update(){
         if (bmp != null) {
            // System.out.println(game.getHeight()+" ===>"+y);
@@ -57,6 +58,19 @@ public class Road {
         }
 
     }
+    public void setMy(int my){
+        this.my = my;
+    }
 
+    public int getMy(){
+        return my;
+    }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

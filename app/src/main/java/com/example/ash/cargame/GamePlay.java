@@ -13,24 +13,27 @@ import android.view.SurfaceView;
 
 import java.util.Random;
 
-/**
- * Created by Belal Khan on 10/27/2014.
- */
+
 public class GamePlay extends SurfaceView {
 
 
-    long timer = System.currentTimeMillis();
+    long timer,timer2 = System.currentTimeMillis();
     private Bitmap player,enemy,enemy2;
     private SurfaceHolder holder;
     private GameThread gameThread;
     private PlayerSprite myPlayer;
    // private int x,y,width,height;
-    private Bitmap bmpRight;
-    private Bitmap bmpLeft;
+    //private Bitmap bmpRight;
+   // private Bitmap bmpLeft;
     private Road road;
     private GameObjectHandler handler;
     private boolean moveRight;
     private boolean moveLeft;
+
+    int screenHeight = getResources().getDisplayMetrics().heightPixels;
+    int screenWidth = getResources().getDisplayMetrics().widthPixels;
+
+
     Random r;
 
 
@@ -59,7 +62,11 @@ public class GamePlay extends SurfaceView {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-             //   gameThread.stop();
+                try {
+                    gameThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -67,9 +74,10 @@ public class GamePlay extends SurfaceView {
         player = BitmapFactory.decodeResource(getResources(), R.drawable.scar5);
 
         enemy = BitmapFactory.decodeResource(getResources(), R.drawable.struck);
+        enemy2 = BitmapFactory.decodeResource(getResources(), R.drawable.struck);
 
-        bmpLeft = BitmapFactory.decodeResource(getResources(), R.drawable.left);
-        bmpRight = BitmapFactory.decodeResource(getResources(), R.drawable.right);
+      //  bmpLeft = BitmapFactory.decodeResource(getResources(), R.drawable.left);
+      //  bmpRight = BitmapFactory.decodeResource(getResources(), R.drawable.right);
         background = BitmapFactory.decodeResource(getResources(), R.drawable.road3);
 
 
@@ -87,55 +95,96 @@ public class GamePlay extends SurfaceView {
 
     @Override
     protected void onDraw(Canvas canvas){
-        int x = getWidth()-bmpRight.getWidth();
-        int y = (getHeight()/2)-(bmpRight.getHeight()/2);
+//        int x = getWidth()-bmpRight.getWidth();
+//        int y = (getHeight()/2)-(bmpRight.getHeight()/2);
         road.onDraw(canvas);
         //canvas.drawBitmap(background , -55 ,30 ,null);
-        canvas.drawBitmap(bmpRight, x,y, null);
-        canvas.drawBitmap(bmpLeft, 0, y, null);
+       // canvas.drawBitmap(bmpRight, x,y, null);
+       // canvas.drawBitmap(bmpLeft, 0, y, null);
         //myPlayer.onDraw(canvas);
         handler.render(canvas);
     }
     public void update() {
+        System.out.println("asdsadsdasaddsasda "+handler.countOfObject(ID.BasicEnemy));
+
         r = new Random();
     road.update();
     handler.tick();
         if (System.currentTimeMillis() - timer > 5000) {
 
             //System.out.println("asdasdasdasd" + );
-            if(enemyCounter <3){
+            if(enemyCounter <4){
                 handler.addObject(new BasicEnemy(this, enemy, r.nextInt(getWidth() -100), -450, ID.BasicEnemy, handler));
-                enemyCounter++;
-                System.out.println("asdsadsdasaddsasda "+r.nextInt(2));
+                // handler.addObject(new BasicEnemy(this, enemy2, r.nextInt(getWidth() -100), -450, ID.BasicEnemy, handler));
 
+
+                enemyCounter++;
+                this.road.setMy(road.getMy()+1);
             }
 
             timer+= 5000;
         }
+        if (System.currentTimeMillis() - timer2 > 10000) {
+            try {
+              //  gameThread.setRunning(false);
+                this.road.setMy(road.getMy()-1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+//            //System.out.println("asdasdasdasd" + );
+//            if(enemyCounter <10){
+//                handler.addObject(new BasicEnemy(this, enemy, r.nextInt(getWidth() -100), -450, ID.BasicEnemy, handler));
+//                // handler.addObject(new BasicEnemy(this, enemy2, r.nextInt(getWidth() -100), -450, ID.BasicEnemy, handler));
+//
+//
+//                enemyCounter++;
+//                this.road.setMy(road.getMy()+2);
+//            }
+//
+//            timer+= 5000;
+//        }
     }
 
 
     protected void checkMovement(float x2, float y2){
-        int xRight = getWidth()  - bmpRight.getWidth();
-        int xLeft = 0 ;
-
-        int y = (getHeight()/2)-(bmpRight.getHeight()/2);
-
-        int width = bmpRight.getWidth();
-        int height = bmpRight.getHeight();
-
-        if(x2>xRight && x2<xRight + width && y2>y && y2<y+height){
-            moveRight=true;
-            moveLeft=false;
-        }
-        else if(x2>xLeft && x2<xLeft+ width && y2>y && y2<y+height){
-            moveRight=false;
-            moveLeft=true;
-        }else{
-
-            moveRight= false;
-            moveLeft= false;
-        }
+       // System.out.println(screenWidth/2+" : "+x2+" : "+screenHeight/2+" : "+y2);
+       // System.out.println(road.getWidth()/2+" : "+road.getHeight()/2);
+            int xRight = screenWidth/2;
+            int xLeft = 0;
+            if(x2>xRight){
+                //System.out.println(screenWidth/2+" : "+x2+" : "+screenHeight/2+" : "+y2);
+                moveRight=true;
+                moveLeft=false;
+            }else if(x2<xRight){
+                moveRight=false;
+                moveLeft=true;
+            }else{
+                moveRight=false;
+                moveLeft=false;
+            }
+//        int xRight = getWidth()  - bmpRight.getWidth();
+//        int xLeft = 0 ;
+//
+//        int y = (getHeight()/2)-(bmpRight.getHeight()/2);
+//
+//        int width = bmpRight.getWidth();
+//        int height = bmpRight.getHeight();
+//
+//        if(x2>xRight && x2<xRight + width && y2>y && y2<y+height){
+//            moveRight=true;
+//            moveLeft=false;
+//        }
+//        else if(x2>xLeft && x2<xLeft+ width && y2>y && y2<y+height){
+//            moveRight=false;
+//            moveLeft=true;
+//        }else{
+//
+//            moveRight= false;
+//            moveLeft= false;
+//        }
 
 
     }

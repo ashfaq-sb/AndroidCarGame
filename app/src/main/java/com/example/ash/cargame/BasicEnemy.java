@@ -70,7 +70,13 @@ public class BasicEnemy extends GameObject{
                 if(getBounds().intersect(tempObject.getBounds())){
                     handler.removeObject(this);
                     GamePlay.enemyCounter--;
-                    System.out.println("asdsadsdasaddsasda "+GamePlay.enemyCounter);
+                    //System.out.println("asdsadsdasaddsasda "+GamePlay.enemyCounter);
+                }
+            }
+            if(tempObject.getId() == ID.BasicEnemy){
+
+                if(getBounds().intersect(tempObject.getBounds())){
+                   //game
                 }
             }
         }

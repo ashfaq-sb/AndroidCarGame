@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
-import com.facebook.FacebookSdk;
 
 public class MyActivity extends Activity {
 
@@ -15,7 +14,6 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(new GamePlay(this));
-        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
 

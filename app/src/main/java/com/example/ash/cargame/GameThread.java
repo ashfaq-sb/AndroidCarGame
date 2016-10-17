@@ -3,12 +3,15 @@ package com.example.ash.cargame;
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 
-/**
- * Created by Belal Khan on 11/5/2014.
- */
+
 public class GameThread extends Thread{
     private GamePlay game;
     private boolean running=false;
+
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 
     public void startGame(boolean start){
         running = start;
@@ -16,6 +19,11 @@ public class GameThread extends Thread{
 
     public GameThread(GamePlay game){
         this.game = game;
+    }
+
+    public void stopGame(){
+        this.running = false;
+
     }
 
     @SuppressLint("WrongCall")
@@ -26,7 +34,7 @@ public class GameThread extends Thread{
         long lastTime = System.nanoTime();
         double amountOFTicks = 60.0; // seconds
         double ns = 100000000 / amountOFTicks; // convert to nano seconds
-        double delta = 0;
+        double delta = 0.0;
         long timer = System.currentTimeMillis();
         @SuppressWarnings("unused")
         int frames = 0;
@@ -52,11 +60,11 @@ public class GameThread extends Thread{
 
                     frames++;
 
-                    if (System.currentTimeMillis() - timer > 1000) {
+                    if (System.currentTimeMillis() - timer > 1) {
 
 
-                        timer += 2000;
-                        System.out.println("FramesPerSecond: " + frames);
+                        timer += 9000;
+                        //System.out.println("FramesPerSecond: " + frames);
                         frames = 0;
 
                     }
